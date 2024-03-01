@@ -1,26 +1,28 @@
-# To-Do List Web Application
+# TodoList Web App
 
-Welcome to my simple and intuitive to-do list web application! This project is designed to help you manage and organize your tasks efficiently. Below, you'll find information on how to use the application, its key features, and how to set it up for yourself.
+Welcome to the TodoList web app repository! This simple and intuitive todo list helps you stay organized and manage your tasks efficiently.
+
+## Live Demo
+Check out the live demo [here](https://furqontechnologies.github.io/Todolist/).
 
 ## Features
-
-- **Add Tasks:** Quickly add new tasks by typing them into the input field and clicking "Add Task."
-- **Mark as Completed:** Keep track of completed tasks by clicking the "Complete" button next to each task.
-- **Remove Tasks:** Streamline your to-do list by removing completed or unnecessary tasks with the "Remove" button.
-- **Persistent Storage:** Your to-do list is saved to local storage, ensuring your tasks persist even if you close the browser or refresh the page.
+- Add new tasks to your todo list
+- Mark tasks as completed by clicking on them
+- Remove tasks with the delete button
+- Persist your todo list using local storage
 
 ## How to Use
+1. Visit the [live demo](https://furqontechnologies.github.io/Todolist/).
+2. Enter a task in the input field and click 'Add'.
+3. Click on a task to mark it as completed.
+4. Use the delete button to remove tasks.
+5. Your tasks are saved locally, so they'll persist even if you close the page.
 
-1. **Add a Task:**
-   - Type a new task into the input field.
-   - Click the "Add Task" button.
+## Contributing
+If you'd like to contribute to the development of this project, feel free to fork the repository and submit a pull request.
 
-2. **Mark as Completed:**
-   - Click the "Complete" button next to a task to mark it as completed.
+## Issues
+If you encounter any issues or have suggestions for improvements, please [open an issue](https://github.com/FurqonTechnologies/Todolist/issues).
 
-3. **Remove a Task:**
-   - Click the "Remove" button to remove a completed or unnecessary task.
-
-## Demo
-
-Visit the [live demo] { https://furqontechnologies.github.io/Todolist/}to try out the to-do list app.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
