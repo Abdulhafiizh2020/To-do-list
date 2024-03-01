@@ -1,86 +1,100 @@
+// Load existing todos from local storage on page load
+window.onload = function() {
+    loadTodos();
+};
 
-// Load tasks from local storage when the page loads
-document.addEventListener("DOMContentLoaded", loadTasks);
+// Function to load existing todos from local storage
+function loadTodos() {
+    var todos = JSON.parse(localStorage.getItem("todos")) || [];
+    var todoList = document.getElementById("todoList");
 
-function addTask() {
-    const taskInput = document.getElementById("taskInput");
-    const taskList = document.getElementById("taskList");
+    // Clear existing todo list
+    todoList.innerHTML = "";
 
-    if (taskInput.value.trim() !== "") {
-        const taskItem = document.createElement("li");
-        taskItem.innerHTML = `
-            <span>${taskInput.value}</span>
-            <button onclick="toggleTaskCompletion(this)">Complete</button>
-            <button onclick="removeTask(this)">Remove</button>
-        `;
-        taskList.appendChild(taskItem);
-        saveTaskToLocalStorage(taskInput.value);
-        taskInput.value = "";
+    // Add each todo to the list
+    todos.forEach(function(todo) {
+        var li = createTodoElement(todo.text, todo.completed);
+        todoList.appendChild(li);
+    });
+}
+ 
+
+// Function to create a todo list item element
+function createTodoElement(text, completed) {
+    var li = document.createElement("li");
+    li.textContent = text;
+    if (completed) {
+        li.classList.add("strike");
     }
+    li.onclick = toggleTodo;
+
+    var deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.onclick = removeTodo;
+
+    // Append the delete button to the end of the todo item
+    li.appendChild(deleteButton);
+
+    return li;
 }
 
-function toggleTaskCompletion(button) {
-    const taskItem = button.parentNode;
-    taskItem.classList.toggle("completed");
 
-    // Update the completion status in local storage
-    const taskText = taskItem.querySelector("span").innerText;
-    updateTaskCompletionInLocalStorage(taskText);
+// Function to add a new todo
+function addTodo() {
+    var todoInput = document.getElementById("todoInput");
+    var todoText = todoInput.value.trim();
+
+    if (todoText === "") {
+        alert("Please enter a todo!");
+        return;
+    }
+
+    var li = createTodoElement(todoText, false);
+
+    var todoList = document.getElementById("todoList");
+    todoList.appendChild(li);
+
+    // Save updated todo list to local storage
+    saveTodos();
+
+    // Clear the input field
+    todoInput.value = "";
 }
 
-function removeTask(button) {
-    const taskItem = button.parentNode;
-    taskItem.remove();
+// Function to toggle the "completed" state of a todo
+function toggleTodo() {
+    this.classList.toggle("strike");
 
-    // Remove the task from local storage
-    const taskText = taskItem.querySelector("span").innerText;
-    removeTaskFromLocalStorage(taskText);
+    // Save updated todo list to local storage
+    saveTodos();
 }
 
-function saveTaskToLocalStorage(task) {
-    let tasks = getTasksFromLocalStorage();
-    tasks.push({ text: task, completed: false });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+// Function to remove a todo
+function removeTodo(event) {
+    // Prevent the button click event from bubbling up to the parent li
+    event.stopPropagation();
+
+    var todoList = document.getElementById("todoList");
+    var li = this.parentElement;
+    todoList.removeChild(li);
+
+    // Save updated todo list to local storage
+    saveTodos();
 }
 
-function updateTaskCompletionInLocalStorage(taskText) {
-    let tasks = getTasksFromLocalStorage();
-    const updatedTasks = tasks.map((task) => {
-        if (task.text === taskText) {
-            task.completed = !task.completed;
-        }
-        return task;
+// Function to save the current todo list to local storage
+function saveTodos() {
+    var todoList = document.getElementById("todoList");
+    var todos = [];
+
+    // Extract the text content and completion status of each todo item
+    todoList.querySelectorAll("li").forEach(function(li) {
+        todos.push({
+            text: li.textContent,
+            completed: li.classList.contains("strike")
+        });
     });
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    // Save the todo list to local storage
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
-
-function removeTaskFromLocalStorage(taskText) {
-    let tasks = getTasksFromLocalStorage();
-    const updatedTasks = tasks.filter((task) => task.text !== taskText);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-}
-
-function getTasksFromLocalStorage() {
-    return JSON.parse(localStorage.getItem("tasks")) || [];
-}
-
-function loadTasks() {
-    const taskList = document.getElementById("taskList");
-    taskList.innerHTML = "";
-    const tasks = getTasksFromLocalStorage();
-
-    tasks.forEach((task) => {
-        const taskItem = document.createElement("li");
-        taskItem.innerHTML = `
-            <span>${task.text}</span>
-            <button onclick="toggleTaskCompletion(this)">Complete</button>
-            <button onclick="removeTask(this)">Remove</button>
-        `;
-        if (task.completed) {
-            taskItem.classList.add("completed");
-        }
-        taskList.appendChild(taskItem);
-    });
-}
-
-
